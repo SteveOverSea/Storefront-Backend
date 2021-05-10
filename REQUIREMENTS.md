@@ -46,4 +46,4 @@ TABLE users (id SERIAL PRIMARY KEY, first_name VARCHAR, last_name VARCHAR, passw
 
 TABLE orders (id SERIAL PRIMARY KEY, user_id REFERENCES users(id), status boolean)
 
-TABLE order_lists (order_id REFERENCES orders(id), quantitiy integer, product_id REFERENCES products(id))
+TABLE order_lists (order_id REFERENCES orders(id), quantity integer, product_id REFERENCES products(id))

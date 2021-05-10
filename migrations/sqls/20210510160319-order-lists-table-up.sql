@@ -1,0 +1,1 @@
+CREATE TABLE order_lists (order_id integer REFERENCES orders(id), quantity integer, product_id integer REFERENCES products(id));
