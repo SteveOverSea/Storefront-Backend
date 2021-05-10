@@ -44,9 +44,8 @@ export class Users {
             const result = await conn
                 .query(sql, [u.first_name, u.last_name, u.password]);
             
-            const user = result.rows[0]
             conn.release();
-            return user;
+            return result.rows[0];
         } catch (err) {
             throw new Error(`Could not add new book ${u.first_name} ${u.last_name} . Error: ${err}`);
         }
@@ -59,9 +58,8 @@ export class Users {
   
             const result = await conn.query(sql);
   
-            const user = result.rows[0]
             conn.release();
-            return user;
+            return result.rows[0];
         } catch (err) {
             throw new Error(`Could not delete user ${id}. Error: ${err}`)
         }
