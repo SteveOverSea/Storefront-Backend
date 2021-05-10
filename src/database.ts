@@ -10,11 +10,11 @@ const {
     DB_PASSWORD
 } = process.env;
 
-const client = new Pool({
+const Client = new Pool({
     host: DB_HOST,
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD
 });
 
-export default client;
+export default Client;
