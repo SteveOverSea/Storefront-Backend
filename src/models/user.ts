@@ -1,7 +1,7 @@
 import Client from "../database";
 
 export type User = {
-    id: number,
+    id?: number,
     first_name: string,
     last_name: string,
     password: string
@@ -48,6 +48,21 @@ export class Users {
             return result.rows[0];
         } catch (err) {
             throw new Error(`Could not add new book ${u.first_name} ${u.last_name} . Error: ${err}`);
+        }
+    }
+
+    async update(id: string, u: User): Promise<User> {
+        try {
+            const conn = await Client.connect();
+            const sql = `UPDATE users SET first_name='$1', last_name='$2', password='$3 WHERE id=${id} RETURNING *;`;
+
+            const result = await conn
+                .query(sql, [u.first_name, u.last_name, u.password]);
+
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Could not update user ${u.id}. Error: ${err}`);
         }
     }
   
