@@ -51,11 +51,11 @@ const destroy = async (req: express.Request, res: express.Response) => {
 }
 
 const user_routes = (app: express.Application) => {
-    app.get("/", index);
-    app.get("/:id", show);
-    app.post("/", create);
-    app.put("/:id", edit);
-    app.delete("/:id", destroy);
+    app.get("/users", index);
+    app.get("/users/:id", show);
+    app.post("/users", create);
+    app.put("/users/:id", edit);
+    app.delete("/users/:id", destroy);
 };
 
 export default user_routes;
