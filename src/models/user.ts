@@ -39,7 +39,7 @@ export class Users {
     async create(u: User): Promise<User> {
         try {
             const conn = await Client.connect();
-            const sql = 'INSERT INTO user (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
+            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
             
             const result = await conn
                 .query(sql, [u.first_name, u.last_name, u.password]);
@@ -54,7 +54,7 @@ export class Users {
     async update(id: string, u: User): Promise<User> {
         try {
             const conn = await Client.connect();
-            const sql = `UPDATE users SET first_name='$1', last_name='$2', password='$3 WHERE id=${id} RETURNING *;`;
+            const sql = `UPDATE users SET first_name=$1, last_name=$2, password=$3 WHERE id=${id} RETURNING *;`;
 
             const result = await conn
                 .query(sql, [u.first_name, u.last_name, u.password]);
@@ -69,7 +69,7 @@ export class Users {
     async delete(id: string): Promise<User> {
         try {
             const conn = await Client.connect();
-            const sql = `DELETE FROM books WHERE id=${id}`;
+            const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;
   
             const result = await conn.query(sql);
   

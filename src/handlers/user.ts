@@ -25,7 +25,8 @@ const create = async (req: express.Request, res: express.Response) => {
         res.send(newUser);
 
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400);
+        res.send(error);
     }
 
 }
