@@ -60,7 +60,6 @@ export class Users {
                 .query(sql, [u.first_name, u.last_name, u.password]);
 
             conn.release();
-            console.log(result.rows);
             return result.rows[0];
         } catch (err) {
             throw new Error(`Could not update user ${u.id}. Error: ${err}`);
