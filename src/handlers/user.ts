@@ -4,13 +4,21 @@ import { User, Users } from "../models/user";
 const userStore = new Users();
 
 const index = async (req: express.Request, res: express.Response) => {
-    const users = await userStore.index();
-    res.send(users);
+    try {
+        const users = await userStore.index();
+        res.send(users);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 };
 
 const show = async (req: express.Request, res: express.Response) => {
-    const user = await userStore.show(req.params.id);
-    res.send(user);
+    try {
+        const user = await userStore.show(req.params.id);
+        res.send(user);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 }
 
 const create = async (req: express.Request, res: express.Response) => {
@@ -47,8 +55,12 @@ const edit = async (req: express.Request, res: express.Response) => {
 }
 
 const destroy = async (req: express.Request, res: express.Response) => {
-    const deleted = await userStore.delete(req.params.id);
-    res.send(deleted);
+    try {
+        const deleted = await userStore.delete(req.params.id);
+        res.send(deleted);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 }
 
 const user_routes = (app: express.Application) => {
