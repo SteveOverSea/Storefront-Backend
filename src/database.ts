@@ -14,6 +14,8 @@ const {
 
 let Client: Pool;
 
+console.log(ENV);
+
 if (ENV === "dev") {
     Client = new Pool({
         host: DB_HOST,
