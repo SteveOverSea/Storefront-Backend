@@ -20,6 +20,7 @@ describe("testing /users endpoint", () => {
             .send(johnDoe)
             .expect(200);  
             
+        console.log("create");
         console.log(response.body);
         
         expect(response.body.first_name).toEqual("John");
@@ -30,14 +31,23 @@ describe("testing /users endpoint", () => {
         const response = await request.get("/users/1")
             .expect(200);
 
+        console.log("show");
+        console.log(response.body);
+
         expect(response.body.id).toEqual(1);
+        expect(response.body.first_name).toEqual("John");
     });
 
     it("should delete user John Doe with id 1", async () => {
         const response = await request.delete("/users/1")
             .expect(200);
+
+        console.log("delete");
+        console.log(response.body);
         
         expect(response.body.id).toEqual(1);
+        expect(response.body.first_name).toEqual("John");
+
 
     });
 });
