@@ -54,11 +54,11 @@ Create, Update and Delete routes usually do.
 ### /users
 
 The user consists out of
-    - id 
-    - first_name
-    - last_name
-    - password
-    - recentPurchases (optional)
+- id 
+- first_name
+- last_name
+- password
+- recentPurchases (optional)
 
 Creating the user doesn't need a token.
 You can login with your credentials on /users/login
@@ -70,29 +70,29 @@ On the Show route (GET users/:id) you also get recentPurchases back, an array of
 ### /products
 
 The product consists out of
-    - id
-    - name
-    - price
-    - category
+- id
+- name
+- price
+- category
 
 The usual CRUD routes are implemented, you need a user token for all manipulating routes.
 
 ### /orders
 
 The order consists out of
-    - id
-    - user_id
-    - status
+- id
+- user_id
+- status
   
 The order stores orders connected to a specific users and saves the current status (active or finished).
 The usual CRUD routes are implemented, you need a user token for all manipulating routes.
 
 ### /order_lists
 The order consists out of
-    - id
-    - order_id
-    - quantity
-    - product_id
+- id
+- order_id
+- quantity
+- product_id
   
 The order_lists stores the products and quantity connected to a specific order.
 The usual CRUD routes are implemented, you need a user token for all manipulating routes.
