@@ -20,6 +20,7 @@ describe("testing /users endpoint", () => {
     };
 
     let tokenJohnDoe: string;
+    let tokenJohnDoe2: string;
 
     const jessicaDoe: User = {
         first_name: "Jessica",
@@ -83,17 +84,30 @@ describe("testing /users endpoint", () => {
     });
 
     it("should create 2nd John Doe and get all", async () => {
-        await request.post("/users")
+        let response = await request.post("/users")
             .send(johnDoe)
             .expect(200);  
 
-        const response = await request.get("/users")
+        tokenJohnDoe2 = response.body.token;
+
+        response = await request.get("/users")
             .expect(200);
 
         expect(response.body.length).toEqual(2);
         expect(response.body[0].first_name).toEqual("Jessica");
         expect(response.body[1].first_name).toEqual("John");
 
+    });
+
+    it("should not edit 2nd John Doe to Jessica Doe (false token)", async () => {
+        const response = await request.put("/users/1")
+        .set('Authorization', 'bearer ' + tokenJohnDoe2)
+        .send({
+            first_name: "Jessica",
+            last_name: "Doe",
+            password: "password"
+        })
+        .expect(401);
     });
 
     it("should not delete user John Doe (token missing)", async () => {

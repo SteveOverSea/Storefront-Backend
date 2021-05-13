@@ -46,12 +46,12 @@ you can start this API with
 npm run start
 ```
 
-# Routes and Database Schemas
+## Routes and Database Schemas
 
-## /users
+### /users
 
-## /products
+### /products
 
-## /orders
+### /orders
 
-## /order_lists
+### /order_lists

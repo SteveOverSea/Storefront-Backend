@@ -10,7 +10,7 @@ const index = async (req: express.Request, res: express.Response) => {
         const users = await userStore.index();
         res.send(users);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 };
 
@@ -19,7 +19,7 @@ const show = async (req: express.Request, res: express.Response) => {
         const user = await userStore.show(req.params.id);
         res.send(user);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
@@ -39,7 +39,7 @@ const create = async (req: express.Request, res: express.Response) => {
 
     } catch (error) {
         res.status(400);
-        res.send(error);
+        res.send(error.message);
     }
 
 }
@@ -51,23 +51,32 @@ const edit = async (req: express.Request, res: express.Response) => {
             last_name: req.body.last_name,
             password: req.body.password
         };
-
-        // TODO: constrain to only edit the user that is logged in
+    
+        if(res.locals.decoded.user.id != req.params.id)
+            throw new Error("trying to update another user");
 
         const updatedUser = await userStore.update(req.params.id, user);
         res.send(updatedUser);
     } catch (error) {
-        res.status(400).send(error);
+        if (error.message == "trying to update another user")
+            res.status(401).send(error.message);
+        else
+            res.status(400).send(error.message);
     }
 }
 
 const destroy = async (req: express.Request, res: express.Response) => {
     try {
+        if(res.locals.decoded.user.id != req.params.id)
+            throw new Error("trying to update another user");
+
         const deleted = await userStore.delete(req.params.id);
-         // TODO: constrain to only edit the user that is logged in
         res.send(deleted);
     } catch (error) {
-        res.status(400).send(error);
+        if (error.message == "trying to update another user")
+            res.status(401).send(error.message);
+        else
+            res.status(400).send(error.message);
     }
 }
 

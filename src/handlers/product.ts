@@ -9,7 +9,7 @@ const index = async (req: express.Request, res: express.Response) => {
         const products = await productStore.index();
         res.send(products);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 };
 
@@ -18,7 +18,7 @@ const show = async (req: express.Request, res: express.Response) => {
         const product = await productStore.show(req.params.id);
         res.send(product);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
@@ -35,7 +35,7 @@ const create = async (req: express.Request, res: express.Response) => {
 
     } catch (error) {
         res.status(400);
-        res.send(error);
+        res.send(error.message);
     }
 
 }
@@ -51,7 +51,7 @@ const edit = async (req: express.Request, res: express.Response) => {
         const updatedProduct = await productStore.update(req.params.id, product);
         res.send(updatedProduct);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
@@ -60,7 +60,7 @@ const destroy = async (req: express.Request, res: express.Response) => {
         const deleted = await productStore.delete(req.params.id);
         res.send(deleted);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 

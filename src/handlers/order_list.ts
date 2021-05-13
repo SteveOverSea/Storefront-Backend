@@ -9,7 +9,7 @@ const index = async (req: express.Request, res: express.Response) => {
         const order_lists = await order_listStore.index();
         res.send(order_lists);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 };
 
@@ -18,7 +18,7 @@ const show = async (req: express.Request, res: express.Response) => {
         const order_list = await order_listStore.show(req.params.id);
         res.send(order_list);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
@@ -35,7 +35,7 @@ const create = async (req: express.Request, res: express.Response) => {
 
     } catch (error) {
         res.status(400);
-        res.send(error);
+        res.send(error.message);
     }
 
 }
@@ -51,7 +51,7 @@ const edit = async (req: express.Request, res: express.Response) => {
         const updatedOrder_List = await order_listStore.update(req.params.id, order_list);
         res.send(updatedOrder_List);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
@@ -60,7 +60,7 @@ const destroy = async (req: express.Request, res: express.Response) => {
         const deleted = await order_listStore.delete(req.params.id);
         res.send(deleted);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
 }
 
