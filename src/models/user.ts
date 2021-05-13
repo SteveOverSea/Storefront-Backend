@@ -1,7 +1,7 @@
 import Client from "../database";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
+import { Product } from "./product";
 
 dotenv.config();
 const pepper: string = process.env.BCRYPT_PW as string;
@@ -12,7 +12,7 @@ export type User = {
     first_name: string,
     last_name: string,
     password: string,
-    token?: string
+    recentPurchases?: Product[]
 };
 
 export class Users {
@@ -33,12 +33,23 @@ export class Users {
     async show(id: string): Promise<User> {
         try {
             const conn = await Client.connect();
-            const sql = `SELECT * FROM users WHERE id=${id};`;
+            let sql = `SELECT * FROM users WHERE id=${id};`;
 
-            const result = await conn.query(sql);
+            let result = await conn.query(sql);
+            const user = result.rows[0];
+
+            sql = `SELECT name, price, category
+                FROM order_lists INNER JOIN products ON product_id = id(products) 
+                INNER JOIN orders ON order_id=id(orders) 
+                INNER JOIN users ON user_id=id(users) 
+                WHERE status=true AND id(users)=${id}
+                ORDER BY order_id LIMIT 5;`
+
+            result = await conn.query(sql);
+            user.recentPurchases = result.rows;
 
             conn.release()
-            return result.rows[0]
+            return user;
         } catch (err) {
             throw new Error(`Could not find user ${id}. Error: ${err}`)
         }
@@ -66,8 +77,10 @@ export class Users {
             const conn = await Client.connect();
             const sql = `UPDATE users SET first_name = $1, last_name= $2 , password= $3 WHERE id=${id} RETURNING *;`;
 
+            const hashedPW = bcrypt.hashSync(u.password + pepper, saltRounds);
+
             const result = await conn
-                .query(sql, [u.first_name, u.last_name, u.password]);
+                .query(sql, [u.first_name, u.last_name, hashedPW]);
 
             conn.release();
             return result.rows[0];

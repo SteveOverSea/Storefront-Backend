@@ -5,29 +5,44 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index:    GET /products
-- Show:     GET /products/:id
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products:   GET /products/popular
-- [OPTIONAL] Products by category (args: product category): GET /products/:category
+- Index                     GET /products
+- Show                      GET /products/:id
+- Create [token required]   POST /products
+- Update [token required]   PUT /products/:id
+- Delete [token required]   DELETE /products/:id
+
 
 #### Users
-- Index [token required]:   GET /users
-- Show [token required]:    GET /users/:id
-- Create New?[token required]  POST /users
+- Index                         GET /users
+- Show                          GET /users/:id
+- Create                        POST /users
+- Update [token required]       PUT /users/:id
+- Delete [token required]       DELETE /users/:id
+- Login                         POST /users/login
 
 #### Orders
-- Current Order by user (args: user id)[token required] GET /orders/:userid
-- [OPTIONAL] Completed Orders by user (args: user id)[token required] GET/orders/completed/:userid
+- Index                         GET /orders
+- Show                          GET /orders/:id
+- Create [token required]       POST /orders
+- Update [token required]       PUT /orders/:id
+- Delete [token required]       DELETE /orders/:id
+
+#### Users
+- Index                         GET /order-lists
+- Show                          GET /order-lists/:id
+- Create [token required]       POST /order-lists
+- Update [token required]       PUT /order-lists/:id
+- Delete [token required]       DELETE /order-lists/:id
+- Login                         POST /order-lists/login
 
 ## Data Shapes
 #### Product
--  id
+- id
 - name
 - price
-- [OPTIONAL] category
+- category
 
-TABLE products (id SERIAL PRIMARY KEY, name VARCHAR, price NUMERIC(8,2), category VARCHAR)
+CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR, price NUMERIC(8,2), category VARCHAR)
 
 #### User
 - id
@@ -35,15 +50,19 @@ TABLE products (id SERIAL PRIMARY KEY, name VARCHAR, price NUMERIC(8,2), categor
 - lastName
 - password
 
-TABLE users (id SERIAL PRIMARY KEY, first_name VARCHAR, last_name VARCHAR, password VARCHAR)
+CREATE TABLE users (id SERIAL PRIMARY KEY, first_name VARCHAR, last_name VARCHAR, password VARCHAR)
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
 
-TABLE orders (id SERIAL PRIMARY KEY, user_id REFERENCES users(id), status boolean)
+CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id REFERENCES users(id), status boolean)
 
-TABLE order_lists (order_id REFERENCES orders(id), quantity integer, product_id REFERENCES products(id))
+#### Order_Lists
+- id
+- id of product in order
+- quantity of product
+- id of the order
+
+CREATE TABLE order_lists (id SERIAL PRIMARY KEY, order_id REFERENCES orders(id), quantity integer, product_id REFERENCES products(id))
