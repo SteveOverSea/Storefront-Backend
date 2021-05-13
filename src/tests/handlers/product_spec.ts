@@ -18,9 +18,23 @@ describe("testing /products endpoint", () => {
         category: "fruit"
     }
 
+    let token: string;
+
+    beforeAll(async () => {
+        const response = await request.post("/users/login")
+            .send({
+                first_name: "John",
+                last_name: "Doe",
+                password: "password"
+            });
+
+        token = response.body.token;
+    });
+
     it("should create product Banana", async () => {
         const response = await request.post("/products")
             .send(banana)
+            .set("Authorization", "bearer " + token)
             .expect(200);  
         
         expect(response.body.name).toEqual("Banana");
@@ -39,6 +53,7 @@ describe("testing /products endpoint", () => {
     it("should edit product Banana to Apple", async () => {
         const response = await request.put("/products/1")
             .send(apple)
+            .set("Authorization", "bearer " + token)
             .expect(200);
         
         expect(response.body.id).toEqual(1);
@@ -48,6 +63,7 @@ describe("testing /products endpoint", () => {
     it("should create 2nd Banana and get all", async () => {
         await request.post("/products")
             .send(banana)
+            .set("Authorization", "bearer " + token)
             .expect(200);  
 
         const response = await request.get("/products")
@@ -61,6 +77,7 @@ describe("testing /products endpoint", () => {
 
     it("should delete product Apple with id 1", async () => {
         const response = await request.delete("/products/1")
+            .set("Authorization", "bearer " + token)
             .expect(200);
         
         expect(response.body.id).toEqual(1);
