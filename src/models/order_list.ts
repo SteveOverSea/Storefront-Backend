@@ -3,6 +3,7 @@ import Client from "../database";
 // needs more customization - not a default model class
 
 export type Order_List = {
+    id?: number,
     order_id: number,
     quantity: number,
     product_id: number
@@ -30,10 +31,10 @@ export class Order_Lists {
 
             const result = await conn.query(sql);
 
-            conn.release()
-            return result.rows[0]
+            conn.release();
+            return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find order_list associated with order ${id}. Error: ${err}`)
+            throw new Error(`Could not find order_list id ${id}. Error: ${err}`)
         }
     }
   
@@ -63,21 +64,21 @@ export class Order_Lists {
             conn.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not update order_list with order_id ${ol.order_id}. Error: ${err}`);
+            throw new Error(`Could not update order_list id ${ol.id}. Error: ${err}`);
         }
     }
   
     async delete(id: string): Promise<Order_List> {
         try {
             const conn = await Client.connect();
-            const sql = `DELETE FROM order_lists WHERE id=${id};`;
+            const sql = `DELETE FROM order_lists WHERE id=${id} RETURNING *;`;
   
             const result = await conn.query(sql);
   
             conn.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not delete order_list with order ${id}. Error: ${err}`)
+            throw new Error(`Could not delete order_list with id ${id}. Error: ${err}`)
         }
     }
   }

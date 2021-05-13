@@ -87,10 +87,4 @@ describe("testing /orders endpoint", () => {
         expect(response.body.id).toEqual(1);
         expect(response.body.user_id).toEqual(3);
     });
-
-    // delete added users
-    afterAll(async () => {
-        await request.delete("/users/2");
-        await request.delete("/users/3");
-    });
 });
