@@ -1,4 +1,10 @@
 import Client from "../database";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
+const pepper: string = process.env.BCRYPT_PW as string;
+const saltRounds: number = parseInt(process.env.SALT_ROUNDS as string);
 
 export type User = {
     id?: number,
@@ -41,8 +47,10 @@ export class Users {
             const conn = await Client.connect();
             const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *;';
             
+            const hashedPW = bcrypt.hashSync(u.password + pepper, saltRounds);
+
             const result = await conn
-                .query(sql, [u.first_name, u.last_name, u.password]);
+                .query(sql, [u.first_name, u.last_name, hashedPW]);
             
             conn.release();
             return result.rows[0];
@@ -77,6 +85,28 @@ export class Users {
             return result.rows[0];
         } catch (err) {
             throw new Error(`Could not delete user ${id}. Error: ${err}`)
+        }
+    }
+
+    async authenticate(loginUser: User): Promise<User | null> {
+        try {
+            const conn = await Client.connect();
+            const sql = `SELECT password FROM users WHERE first_name = $1 AND last_name = $2;`;
+
+            const result = await conn.query(sql, [loginUser.first_name, loginUser.last_name]);
+
+            if (result.rows.length > 0) {
+                const user = result.rows[0];
+                
+                if (bcrypt.compareSync(loginUser.password + pepper, user.password)) {
+                    return loginUser;
+                }
+            }
+
+            return null;
+
+        } catch (err) {
+            throw new Error(`Could not authenticate user ${loginUser.first_name} ${loginUser.last_name}. Error: ${err}`)
         }
     }
   }
