@@ -12,7 +12,7 @@ export class Order_Lists {
     async index(): Promise<Order_List[]> {
         try {
             const conn = await Client.connect();
-            const sql = 'SELECT * FROM order_lists';
+            const sql = 'SELECT * FROM order_lists;';
 
             const result = await conn.query(sql);
 
@@ -26,7 +26,7 @@ export class Order_Lists {
     async show(id: string): Promise<Order_List> {
         try {
             const conn = await Client.connect();
-            const sql = `SELECT * FROM order_lists WHERE id=${id}`;
+            const sql = `SELECT * FROM order_lists WHERE id=${id};`;
 
             const result = await conn.query(sql);
 
@@ -40,7 +40,7 @@ export class Order_Lists {
     async create(ol: Order_List): Promise<Order_List> {
         try {
             const conn = await Client.connect();
-            const sql = 'INSERT INTO order_lists (order_id, quantity, product_id) VALUES($1, $2, $3) RETURNING *';
+            const sql = 'INSERT INTO order_lists (order_id, quantity, product_id) VALUES($1, $2, $3) RETURNING *;';
             
             const result = await conn
                 .query(sql, [ol.order_id, ol.quantity, ol.product_id]);
@@ -51,11 +51,26 @@ export class Order_Lists {
             throw new Error(`Could not add new order_list from order ${ol.order_id}. Error: ${err}`);
         }
     }
+
+    async update(id: string, ol: Order_List): Promise<Order_List> {
+        try {
+            const conn = await Client.connect();
+            const sql = `UPDATE order_lists SET order_id = $1, quantity = $2, product_id = $3 WHERE id=${id} RETURNING *;`;
+
+            const result = await conn
+                .query(sql, [ol.order_id, ol.quantity, ol.product_id]);
+
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Could not update order_list with order_id ${ol.order_id}. Error: ${err}`);
+        }
+    }
   
     async delete(id: string): Promise<Order_List> {
         try {
             const conn = await Client.connect();
-            const sql = `DELETE FROM order_lists WHERE id=${id}`;
+            const sql = `DELETE FROM order_lists WHERE id=${id};`;
   
             const result = await conn.query(sql);
   
