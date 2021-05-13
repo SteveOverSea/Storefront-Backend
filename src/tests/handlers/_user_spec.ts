@@ -34,24 +34,23 @@ describe("testing /users endpoint", () => {
 
     });
 
-    it("should authenticate John Doe", async () => {
-        const response = await request.get("/users/1")
+    it("should login John Doe", async () => {
+        const response = await request.post("/users/login")
+            .send(johnDoe)
             .expect(200);  
-        
-        const isPWEqual = bcrypt.compareSync(johnDoe.password + pepper, response.body.password);
-            
-        expect(isPWEqual).toEqual(true);
+                    
+        expect(response.body.first_name).toEqual("John");
 
     });
 
     it("should not authenticate John Doe", async () => {
-        const response = await request.get("/users/1")
-            .expect(200);  
-        
-        const isPWEqual = bcrypt.compareSync("something else" + pepper, response.body.password);
-            
-        expect(isPWEqual).toEqual(false);
-
+        const response = await request.get("/users/login")
+            .send({
+                first_name: "John",
+                last_name: "Doe",
+                password: "notTheRightPassword"
+            })
+            .expect(400);  
     });
 
     it("should get user John Doe with id 1", async () => {

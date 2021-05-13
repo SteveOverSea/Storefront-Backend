@@ -1,6 +1,7 @@
 import Client from "../database";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 const pepper: string = process.env.BCRYPT_PW as string;
@@ -10,7 +11,8 @@ export type User = {
     id?: number,
     first_name: string,
     last_name: string,
-    password: string
+    password: string,
+    token?: string
 };
 
 export class Users {

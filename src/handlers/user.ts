@@ -63,12 +63,28 @@ const destroy = async (req: express.Request, res: express.Response) => {
     }
 }
 
+const login = async (req: express.Request, res: express.Response) => {
+    try {
+        const user: User = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            password: req.body.password
+        };
+
+        const loggedInUser = await userStore.authenticate(user);
+        res.send(loggedInUser);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+}
+
 const user_routes = (app: express.Application) => {
     app.get("/users", index);
     app.get("/users/:id", show);
     app.post("/users", create);
     app.put("/users/:id", edit);
     app.delete("/users/:id", destroy);
+    app.post("/users/login", login);
 };
 
 export default user_routes;
