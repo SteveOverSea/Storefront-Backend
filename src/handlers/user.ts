@@ -1,5 +1,7 @@
 import express from "express";
 import { User, Users } from "../models/user";
+import jwt from "jsonwebtoken";
+import verifyAuthToken from "../middleware/verifyAuthToken";
 
 const userStore = new Users();
 
@@ -30,7 +32,10 @@ const create = async (req: express.Request, res: express.Response) => {
         };
 
         const newUser = await userStore.create(user);
-        res.send(newUser);
+
+        const token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as string);
+
+        res.send(token);
 
     } catch (error) {
         res.status(400);
@@ -72,7 +77,10 @@ const login = async (req: express.Request, res: express.Response) => {
         };
 
         const loggedInUser = await userStore.authenticate(user);
-        res.send(loggedInUser);
+
+        const token = jwt.sign({ user: loggedInUser }, process.env.SECRET_TOKEN as string);
+
+        res.send(token);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -82,8 +90,8 @@ const user_routes = (app: express.Application) => {
     app.get("/users", index);
     app.get("/users/:id", show);
     app.post("/users", create);
-    app.put("/users/:id", edit);
-    app.delete("/users/:id", destroy);
+    app.put("/users/:id", verifyAuthToken, edit);
+    app.delete("/users/:id", verifyAuthToken, destroy);
     app.post("/users/login", login);
 };
 

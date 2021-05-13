@@ -1,5 +1,6 @@
 import express from "express";
 import { Order_List, Order_Lists } from "../models/order_list";
+import verifyAuthToken from "../middleware/verifyAuthToken";
 
 const order_listStore = new Order_Lists();
 
@@ -66,9 +67,9 @@ const destroy = async (req: express.Request, res: express.Response) => {
 const order_list_routes = (app: express.Application) => {
     app.get("/order-lists", index);
     app.get("/order-lists/:id", show);
-    app.post("/order-lists", create);
-    app.put("/order-lists/:id", edit);
-    app.delete("/order-lists/:id", destroy);
+    app.post("/order-lists", verifyAuthToken, create);
+    app.put("/order-lists/:id", verifyAuthToken, edit);
+    app.delete("/order-lists/:id", verifyAuthToken, destroy);
 };
 
 export default order_list_routes;

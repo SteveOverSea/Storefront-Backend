@@ -4,10 +4,14 @@ import { User } from "../../models/user";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
+// edit all the test so they can run with tokens
+
 dotenv.config();
 const pepper: string = process.env.BCRYPT_PW as string;
 
 const request = supertest(app);
+
+let token: string;
 
 // should run first! (before order)
 

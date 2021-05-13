@@ -1,5 +1,6 @@
 import express from "express";
 import { Order, Orders } from "../models/order";
+import verifyAuthToken from "../middleware/verifyAuthToken";
 
 const orderStore = new Orders();
 
@@ -64,9 +65,9 @@ const destroy = async (req: express.Request, res: express.Response) => {
 const order_routes = (app: express.Application) => {
     app.get("/orders", index);
     app.get("/orders/:id", show);
-    app.post("/orders", create);
-    app.put("/orders/:id", edit);
-    app.delete("/orders/:id", destroy);
+    app.post("/orders", verifyAuthToken, create);
+    app.put("/orders/:id", verifyAuthToken, edit);
+    app.delete("/orders/:id", verifyAuthToken, destroy);
 };
 
 export default order_routes;
