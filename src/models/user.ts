@@ -93,7 +93,7 @@ export class Users {
     async authenticate(loginUser: User): Promise<User | null> {
         try {
             const conn = await Client.connect();
-            const sql = `SELECT password FROM users WHERE first_name = $1 AND last_name = $2;`;
+            const sql = `SELECT * FROM users WHERE first_name = $1 AND last_name = $2;`;
 
             const result = await conn.query(sql, [loginUser.first_name, loginUser.last_name]);
 
@@ -101,11 +101,10 @@ export class Users {
                 const user = result.rows[0];
                 
                 if (bcrypt.compareSync(loginUser.password + pepper, user.password)) {
-                    return loginUser;
+                    return user;
                 }
             }
-
-            return null;
+            throw new Error("couldn't find user");
 
         } catch (err) {
             throw new Error(`Could not authenticate user ${loginUser.first_name} ${loginUser.last_name}. Error: ${err}`)

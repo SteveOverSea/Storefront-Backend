@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../../server";
 import { User } from "../../models/user";
-import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 // edit all the test so they can run with tokens
@@ -10,8 +10,6 @@ dotenv.config();
 const pepper: string = process.env.BCRYPT_PW as string;
 
 const request = supertest(app);
-
-let token: string;
 
 // should run first! (before order)
 
@@ -23,18 +21,24 @@ describe("testing /users endpoint", () => {
         password: "password"
     };
 
+    let tokenJohnDoe: string;
+
     const jessicaDoe: User = {
         first_name: "Jessica",
         last_name: johnDoe.last_name,
         password: johnDoe.password
     }
 
+    let tokenjessicaDoe: string;
+
     it("should create user John Doe", async () => {
         const response = await request.post("/users")
             .send(johnDoe)
             .expect(200);  
         
-        expect(response.body.first_name).toEqual("John");
+        tokenJohnDoe = response.body.token;
+        const decoded: any = jwt.verify(tokenJohnDoe, process.env.TOKEN_SECRET as jwt.Secret);
+        expect(decoded.user.first_name).toEqual("John");
 
     });
 
@@ -42,8 +46,10 @@ describe("testing /users endpoint", () => {
         const response = await request.post("/users/login")
             .send(johnDoe)
             .expect(200);  
-                    
-        expect(response.body.first_name).toEqual("John");
+         
+        tokenJohnDoe = response.body.token;
+        const decoded: any = jwt.verify(tokenJohnDoe, process.env.TOKEN_SECRET as jwt.Secret);
+        expect(decoded.user.first_name).toEqual("John");
 
     });
 
@@ -69,6 +75,7 @@ describe("testing /users endpoint", () => {
     it("should edit user John Doe to Jessica Doe", async () => {
         const response = await request.put("/users/1")
         .send(jessicaDoe)
+        .set('Authorization', 'bearer ' + tokenJohnDoe)
         .expect(200);
         
         expect(response.body.id).toEqual(1);
@@ -89,8 +96,14 @@ describe("testing /users endpoint", () => {
 
     });
 
+    it("should not delete user John Doe (token missing)", async () => {
+        await request.delete("/users/1")
+            .expect(401);
+    });
+
     it("should delete user John Doe with id 1", async () => {
         const response = await request.delete("/users/1")
+            .set('Authorization', 'bearer ' + tokenJohnDoe)
             .expect(200);
         
         expect(response.body.id).toEqual(1);

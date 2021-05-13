@@ -33,9 +33,9 @@ const create = async (req: express.Request, res: express.Response) => {
 
         const newUser = await userStore.create(user);
 
-        const token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as string);
+        const token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as jwt.Secret);
 
-        res.send(token);
+        res.send({token});
 
     } catch (error) {
         res.status(400);
@@ -78,9 +78,8 @@ const login = async (req: express.Request, res: express.Response) => {
 
         const loggedInUser = await userStore.authenticate(user);
 
-        const token = jwt.sign({ user: loggedInUser }, process.env.SECRET_TOKEN as string);
-
-        res.send(token);
+        const token = jwt.sign({ user: loggedInUser}, process.env.TOKEN_SECRET as jwt.Secret);        
+        res.send({token});
     } catch (error) {
         res.status(400).send(error);
     }
