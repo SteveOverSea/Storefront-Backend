@@ -25,8 +25,8 @@ describe("testing /users endpoint", () => {
 
     const jessicaDoe: User = {
         first_name: "Jessica",
-        last_name: johnDoe.last_name,
-        password: johnDoe.password
+        last_name: "Doe",
+        password: "password"
     }
 
     let tokenjessicaDoe: string;
