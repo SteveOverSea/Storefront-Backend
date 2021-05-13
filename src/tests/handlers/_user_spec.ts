@@ -4,8 +4,7 @@ import { User } from "../../models/user";
 
 const request = supertest(app);
 
-// id is always changing...
-// and dropping table doesnt mean deleting its content
+// should run first! (before order)
 
 describe("testing /users endpoint", () => {
 
