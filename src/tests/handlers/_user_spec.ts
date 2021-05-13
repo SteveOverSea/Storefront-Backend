@@ -1,6 +1,11 @@
 import supertest from "supertest";
 import app from "../../server";
 import { User } from "../../models/user";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
+const pepper: string = process.env.BCRYPT_PW as string;
 
 const request = supertest(app);
 
@@ -26,6 +31,26 @@ describe("testing /users endpoint", () => {
             .expect(200);  
         
         expect(response.body.first_name).toEqual("John");
+
+    });
+
+    it("should authenticate John Doe", async () => {
+        const response = await request.get("/users/1")
+            .expect(200);  
+        
+        const isPWEqual = bcrypt.compareSync(johnDoe.password + pepper, response.body.password);
+            
+        expect(isPWEqual).toEqual(true);
+
+    });
+
+    it("should not authenticate John Doe", async () => {
+        const response = await request.get("/users/1")
+            .expect(200);  
+        
+        const isPWEqual = bcrypt.compareSync("something else" + pepper, response.body.password);
+            
+        expect(isPWEqual).toEqual(false);
 
     });
 

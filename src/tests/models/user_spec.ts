@@ -22,4 +22,8 @@ describe("User Model", () => {
       it('should have a delete method', () => {
         expect(userStore.delete).toBeDefined();
       });
+
+      it('should have a authenticate method', () => {
+        expect(userStore.authenticate).toBeDefined();
+      });
 });
