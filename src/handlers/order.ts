@@ -4,6 +4,8 @@ import verifyAuthToken from "../middleware/verifyAuthToken";
 
 const orderStore = new Orders();
 
+// TODO: let orders only be seen/edited by users that own them
+
 const index = async (req: express.Request, res: express.Response) => {
     try {
         const orders = await orderStore.index();

@@ -4,8 +4,6 @@ import { User } from "../../models/user";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// edit all the test so they can run with tokens
-
 dotenv.config();
 const pepper: string = process.env.BCRYPT_PW as string;
 
@@ -28,8 +26,6 @@ describe("testing /users endpoint", () => {
         last_name: "Doe",
         password: "password"
     }
-
-    let tokenjessicaDoe: string;
 
     it("should create user John Doe", async () => {
         const response = await request.post("/users")
@@ -74,7 +70,11 @@ describe("testing /users endpoint", () => {
     
     it("should edit user John Doe to Jessica Doe", async () => {
         const response = await request.put("/users/1")
-        .send(jessicaDoe)
+        .send({
+            first_name: "Jessica",
+            last_name: "Doe",
+            password: "password"
+        })
         .set('Authorization', 'bearer ' + tokenJohnDoe)
         .expect(200);
         

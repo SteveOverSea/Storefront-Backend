@@ -52,6 +52,8 @@ const edit = async (req: express.Request, res: express.Response) => {
             password: req.body.password
         };
 
+        // TODO: constrain to only edit the user that is logged in
+
         const updatedUser = await userStore.update(req.params.id, user);
         res.send(updatedUser);
     } catch (error) {
@@ -62,6 +64,7 @@ const edit = async (req: express.Request, res: express.Response) => {
 const destroy = async (req: express.Request, res: express.Response) => {
     try {
         const deleted = await userStore.delete(req.params.id);
+         // TODO: constrain to only edit the user that is logged in
         res.send(deleted);
     } catch (error) {
         res.status(400).send(error);
