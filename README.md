@@ -64,20 +64,24 @@ Display the tables (no relations should be found)
 
 Now that you can create a database and a user, you should create one database (with a user) for production and one database (with a user - you can use the same as for the dev db) for testing.
 
-The project will work with your database if you name your environment variables in the .env file (from [dotenv](https://www.npmjs.com/package/dotenv))accordingly:
+The project will work with your database if you name your environment variables in the .env file (from [dotenv](https://www.npmjs.com/package/dotenv)) accordingly:
 
+```
 - DB_HOST = <where you DB is hosted (for development usually localhost)>
 - DB_NAME = <db_name>
 - DB_USER = <user_name> 
 - DB_PASSWORD = <password>
 - TEST_DB_NAME = <db_name> (for tests)
+```
 
 Other environment variables that are necessary
 
+```
 - ENV = "dev" (decided to run with dev db or test db)
 - BCRYPT_PW = <write some string to pepper your encryption>
 - SALT_ROUNDS = <write an integer to say how many times the pw should be hashed>
 - TOKEN_SECRET = <write a string for the JWT secret>
+```
 
 Install the node modules
 
