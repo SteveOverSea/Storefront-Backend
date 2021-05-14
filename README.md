@@ -14,13 +14,76 @@ It should showcase following functionality:
 
 ## Setup
 
+### PostgreSQL
+
+Make sure that you habe PostgreSQL installed, otherwise install [PostgreSQL](https://www.postgresql.org) from their homepage.
+
+```
+postgres --version
+```
+
+Start Postgres with
+
+```
+(sudo) su - postgres
+```
+
+and enter the Postgres terminal with
+
+```
+psql postgres
+```
+
+(you have to enter your superuser and postgres password)
+
+Create the database
+
+```
+CREATE DATABASE <db_name>;
+```
+
+Create a user and grant access to this database
+
+```
+CREATE USER <user_name> WITH PASSWORD <password>;
+
+GRANT ALL PRIVILEGES ON DATABASE <db_name> TO <user_name>;
+```
+
+Connect to the database
+
+```
+\c <db_name>
+```
+
+Display the tables (no relations should be found)
+
+```
+\dt
+```
+
+Now that you can create a database and a user, you should create one database (with a user) for production and one database (with a user - you can use the same as for the dev db) for testing.
+
+The project will work with your database if you name your environment variables in the .env file (from [dotenv](https://www.npmjs.com/package/dotenv))accordingly:
+
+- DB_HOST = <where you DB is hosted (for development usually localhost)>
+- DB_NAME = <db_name>
+- DB_USER = <user_name> 
+- DB_PASSWORD = <password>
+- TEST_DB_NAME = <db_name> (for tests)
+
+Other environment variables that are necessary
+
+- ENV = "dev" (decided to run with dev db or test db)
+- BCRYPT_PW = <write some string to pepper your encryption>
+- SALT_ROUNDS = <write an integer to say how many times the pw should be hashed>
+- TOKEN_SECRET = <write a string for the JWT secret>
+
 Install the node modules
 
 ```
 npm install
 ```
-
-Make sure to have postgreSQL installed on your local pc, so that it can serve as your localhost database
 
 Load the database schema with
 
@@ -45,6 +108,8 @@ you can start this API with
 ```
 npm run start
 ```
+
+The server runs on localhost:3000 on default.
 
 ## Routes and Database Schemas
 
