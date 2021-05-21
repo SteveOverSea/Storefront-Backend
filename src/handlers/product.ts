@@ -27,7 +27,8 @@ const create = async (req: express.Request, res: express.Response) => {
         const product: Product = {
             name: req.body.name,
             price: req.body.price,
-            category: req.body.category
+            description: req.body.description,
+            url: req.body.url
         };
 
         const newProduct = await productStore.create(product);
@@ -45,7 +46,8 @@ const edit = async (req: express.Request, res: express.Response) => {
         const product: Product = {
             name: req.body.name,
             price: req.body.price,
-            category: req.body.category
+            description: req.body.description,
+            url: req.body.url
         };
 
         const updatedProduct = await productStore.update(req.params.id, product);

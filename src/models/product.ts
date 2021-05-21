@@ -4,7 +4,9 @@ export type Product = {
     id?: number,
     name: string,
     price: number,
-    category: string
+    description: string,
+    url: string,
+    quantity?: number
 };
 
 export class Products {
@@ -39,10 +41,10 @@ export class Products {
     async create(p: Product): Promise<Product> {
         try {
             const conn = await Client.connect();
-            const sql = 'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *;';
+            const sql = 'INSERT INTO products (name, price, description, url) VALUES($1, $2, $3, $4) RETURNING *;';
             
             const result = await conn
-                .query(sql, [p.name, p.price, p.category]);
+                .query(sql, [p.name, p.price, p.description, p.url]);
             
             conn.release();
             return result.rows[0];
@@ -54,10 +56,10 @@ export class Products {
     async update(id: string, p: Product): Promise<Product> {
         try {
             const conn = await Client.connect();
-            const sql = `UPDATE products SET name = $1, price = $2 , category = $3 WHERE id=${id} RETURNING *;`;
+            const sql = `UPDATE products SET name = $1, price = $2 , description = $3, url = $4 WHERE id=${id} RETURNING *;`;
 
             const result = await conn
-                .query(sql, [p.name, p.price, p.category]);
+                .query(sql, [p.name, p.price, p.description, p.url]);
 
             conn.release();
             return result.rows[0];
