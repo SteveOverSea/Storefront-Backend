@@ -15,10 +15,10 @@ app.use(express.static(process.env.PROJECT_PATH as string));
 
 app.use(bodyParser.json());
 
-// user_routes(app);
-// product_routes(app);
-// order_routes(app);
-// order_list_routes(app);
+user_routes(app);
+product_routes(app);
+order_routes(app);
+order_list_routes(app);
 
 
 // app.get('/', function (req: Request, res: Response) {
