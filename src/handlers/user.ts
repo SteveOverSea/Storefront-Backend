@@ -28,7 +28,8 @@ const create = async (req: express.Request, res: express.Response) => {
         const user: User = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
-            password: req.body.password
+            password: req.body.password,
+            is_admin: req.body.is_admin
         };
 
         const newUser = await userStore.create(user);
@@ -49,7 +50,8 @@ const edit = async (req: express.Request, res: express.Response) => {
         const user: User = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
-            password: req.body.password
+            password: req.body.password,
+            is_admin: req.body.is_admin
         };
     
         if(res.locals.decoded.user.id != req.params.id)
@@ -85,7 +87,8 @@ const login = async (req: express.Request, res: express.Response) => {
         const user: User = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
-            password: req.body.password
+            password: req.body.password,
+            is_admin: req.body.is_admin
         };
 
         const loggedInUser = await userStore.authenticate(user);

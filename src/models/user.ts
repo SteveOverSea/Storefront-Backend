@@ -12,6 +12,7 @@ export type User = {
     first_name: string,
     last_name: string,
     password: string,
+    is_admin: boolean,
     recentPurchases?: Product[]
 };
 
@@ -58,12 +59,12 @@ export class Users {
     async create(u: User): Promise<User> {
         try {
             const conn = await Client.connect();
-            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *;';
+            const sql = 'INSERT INTO users (first_name, last_name, password, is_admin) VALUES($1, $2, $3, $4) RETURNING *;';
             
             const hashedPW = bcrypt.hashSync(u.password + pepper, saltRounds);
 
             const result = await conn
-                .query(sql, [u.first_name, u.last_name, hashedPW]);
+                .query(sql, [u.first_name, u.last_name, hashedPW, false]);
             
             conn.release();
             return result.rows[0];
