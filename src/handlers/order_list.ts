@@ -64,12 +64,22 @@ const destroy = async (req: express.Request, res: express.Response) => {
     }
 }
 
+const getAllOrders = async (req: express.Request, res: express.Response) => {
+    try {
+        const allOrders = await order_listStore.getAllOrders(req.params.id);
+        res.send(allOrders);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const order_list_routes = (app: express.Application) => {
     app.get("/order-lists", index);
     app.get("/order-lists/:id", show);
     app.post("/order-lists", verifyAuthToken, create);
     app.put("/order-lists/:id", verifyAuthToken, edit);
     app.delete("/order-lists/:id", verifyAuthToken, destroy);
+    app.get("order-lists-for-user/:id", verifyAuthToken, getAllOrders);
 };
 
 export default order_list_routes;

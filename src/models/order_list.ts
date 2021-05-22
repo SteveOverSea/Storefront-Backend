@@ -81,4 +81,18 @@ export class Order_Lists {
             throw new Error(`Could not delete order_list with id ${id}. Error: ${err}`)
         }
     }
+
+    async getAllOrders(id: string): Promise<any> {
+        try {
+            const conn = await Client.connect();
+            const sql = `SELECT name, price, quantity, status FROM orders INNER JOIN order_lists ON id(orders)=order_id INNER JOIN products ON product_id=id(products) INNER JOIN users ON user_id=id(users) WHERE user_id=${id};`
+           
+            const result = await conn.query(sql);
+
+            conn.release();
+            return result.rows;
+        } catch (err) {
+            throw new Error("Could not get all order from " + id);
+        }
+    }
   }
