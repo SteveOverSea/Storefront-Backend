@@ -85,7 +85,7 @@ export class Order_Lists {
     async getAllOrders(id: string): Promise<any> {
         try {
             const conn = await Client.connect();
-            const sql = `SELECT name, price, quantity, status FROM orders INNER JOIN order_lists ON id(orders)=order_id INNER JOIN products ON product_id=id(products) INNER JOIN users ON user_id=id(users) WHERE user_id=${id};`
+            const sql = `SELECT order_id, name, price, quantity, status FROM orders INNER JOIN order_lists ON id(orders)=order_id INNER JOIN products ON product_id=id(products) INNER JOIN users ON user_id=id(users) WHERE user_id=${id};`
            
             const result = await conn.query(sql);
 
