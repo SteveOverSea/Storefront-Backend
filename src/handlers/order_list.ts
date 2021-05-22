@@ -79,7 +79,7 @@ const order_list_routes = (app: express.Application) => {
     app.post("/order-lists", verifyAuthToken, create);
     app.put("/order-lists/:id", verifyAuthToken, edit);
     app.delete("/order-lists/:id", verifyAuthToken, destroy);
-    app.get("order-lists-for-user/:id", verifyAuthToken, getAllOrders);
+    app.get("/order-lists-for-user/:id", verifyAuthToken, getAllOrders);
 };
 
 export default order_list_routes;
