@@ -93,8 +93,12 @@ const login = async (req: express.Request, res: express.Response) => {
         const token = jwt.sign({ user: loggedInUser}, process.env.TOKEN_SECRET as jwt.Secret);        
         res.send({token});
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send(error.message);
     }
+}
+
+const returnDecodedToken = async (req: express.Request, res: express.Response) => {
+    res.send(res.locals.decoded.user);
 }
 
 const user_routes = (app: express.Application) => {
@@ -104,6 +108,7 @@ const user_routes = (app: express.Application) => {
     app.put("/users/:id", verifyAuthToken, edit);
     app.delete("/users/:id", verifyAuthToken, destroy);
     app.post("/users/login", login);
+    app.get("/user/decoded", verifyAuthToken, returnDecodedToken);
 };
 
 export default user_routes;
