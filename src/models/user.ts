@@ -64,7 +64,7 @@ export class Users {
             const hashedPW = bcrypt.hashSync(u.password + pepper, saltRounds);
 
             const result = await conn
-                .query(sql, [u.first_name, u.last_name, hashedPW, false]);
+                .query(sql, [u.first_name, u.last_name, hashedPW, u.is_admin]);
             
             conn.release();
             return result.rows[0];
