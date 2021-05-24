@@ -78,10 +78,10 @@ Other environment variables that are necessary
 
 ```
 - ENV = "dev" (decided to run with dev db or test db)
-- BCRYPT_PW = <write some string to pepper your encryption>
-- SALT_ROUNDS = <write an integer to say how many times the pw should be hashed>
-- TOKEN_SECRET = <write a string for the JWT secret>
-- PROJECT_PATH = <path to your served project>
+- BCRYPT_PW = "<write some string to pepper your encryption>"
+- SALT_ROUNDS = "<write an integer to say how many times the pw should be hashed>"
+- TOKEN_SECRET = "<write a string for the JWT secret>"
+- PROJECT_PATH = "<path to your served project>"
 ```
 
 Install the node modules
