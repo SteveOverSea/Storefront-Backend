@@ -45,7 +45,7 @@ CREATE DATABASE <db_name>;
 Create a user and grant access to this database
 
 ```
-CREATE USER <user_name> WITH PASSWORD <password>;
+CREATE USER <user_name> WITH PASSWORD '<password>';
 
 GRANT ALL PRIVILEGES ON DATABASE <db_name> TO <user_name>;
 ```
