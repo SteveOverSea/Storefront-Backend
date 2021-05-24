@@ -67,11 +67,11 @@ Now that you can create a database and a user, you should create one database (w
 The project will work with your database if you name your environment variables in the .env file (from [dotenv](https://www.npmjs.com/package/dotenv)) accordingly:
 
 ```
-- DB_HOST = <where you DB is hosted (for development usually localhost)>
-- DB_NAME = <db_name>
-- DB_USER = <user_name> 
-- DB_PASSWORD = <password>
-- TEST_DB_NAME = <db_name> (for tests)
+- DB_HOST = "<where you DB is hosted (for development usually localhost)>"
+- DB_NAME = "<db_name>"
+- DB_USER = "<user_name>"
+- DB_PASSWORD = "<password>"
+- TEST_DB_NAME = "<db_name>" (for tests)
 ```
 
 Other environment variables that are necessary
